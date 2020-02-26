@@ -1,0 +1,77 @@
+---
+title: "<br><br>Laboratorio 1"
+subtitle: "Problemas de Probabilidad"
+author: "<br><br><br><br><br>Juvenal Campos"
+institute: "CIDE-LNPP"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [cide, ninjutsu]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+# Presentación: 
+
+<p>Mi nombre es Juvenal Campos, y trabajo para el Laboratorio Nacional de Políticas Públicas del CIDE.</p>
+
+Programo en **R** desde hace más de tres años, y me enfoco en trabajos de creación de bases de datos, visualizaciones, visualización web y productos basados en datos. 
+
+### Datos de contacto:
+
+• LinkedIn: https://www.linkedin.com/in/jorge-juvenal-campos-ferreira-5532b7160/
+
+• GitHub: https://github.com/JuveCampos
+
+• Twitter: https://twitter.com/JuvenalCamposF
+
+• Blog Personal: https://juvenalcampos.com
+
+• Medium: https://medium.com/@jorgejuvenalcamposf
+
+---
+background-image: url(https://cdn1.iconfinder.com/data/icons/social-media-vol-1-1/24/_github-512.png)
+background-size: 150px
+background-position: 98% 5%
+
+# Github
+
+Github es una plataforma para programadores. 
+Sirve como: 
+-	Almacén de código y archivos (repositorio de proyectos). 
+-	Control de versiones. 
+-	Plataforma de colaboración. 
+-	Red social para programadores.
+-	Parte de tu portafolio de trabajo
+
+--
+<br>
+El curso tiene un repositorio en linea, **en el cual voy a estar subiendo el contenido que vayamos creando a lo largo del laboratorio**, el cual pueden consultar en el momento que deseén (oyentes bienvenidos).
+
+--
+<br>
+Enlace: https://github.com/JuveCampos/MetodosCuantitativosAplicados2020
+
+---
+# 2. Preguntas
+
+Todas las sesiones las iniciaremos con las siguientes preguntas: 
+
+--
+**¿Qué han hecho durante las semanas pasadas, referente a la materia?** 
+
+--
+<br>
+**¿Que piensan hacer respecto a la materia durante esta semana?**  
+
+--
+<br>
+**¿En qué les podemos ayudar para que logren sus objetivos con el menor sufrimiento posible?**
+
+--- 
+# 3. Problemas 
+
+
+
