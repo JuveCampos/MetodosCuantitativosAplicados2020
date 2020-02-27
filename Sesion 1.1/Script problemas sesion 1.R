@@ -1,6 +1,5 @@
 # Librerias
 library(tidyverse)
-library(plotly)
 
 # Problema 0 ----
 # El profe Juvenal desea comprarse el modelo más reciente del iPhone. Sin embargo, tiene miedo de que lo asalten en el camión de Tacubaya. Hablando con varios choferes y checando en datos de la Ciudad de México, la tasa de asaltos por camion es de 1 asalto al año en los viajes de la mañana. ¿Cuál es la probabilidad de que asalten al profesor en el primer viaje despues de comprar su nuevo teléfono? ¿Cual es la probabilidad de que le dure todo el semestre? 
@@ -15,7 +14,9 @@ probabilidad = 1/365
 # Experimento aleatorio (1e6 simulaciones)
 library(dplyr)
 
-experimento <- rbinom(n = 1e6, size = 180, prob = probabilidad) %>% 
+experimento <- rbinom(n = 1e6, 
+                      size = 180, 
+                      prob = probabilidad) %>% 
   tibble()
 
 # Grafica
