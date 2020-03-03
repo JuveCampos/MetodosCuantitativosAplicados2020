@@ -2,8 +2,9 @@
 title: "Sesion 2"
 author: "Laboratorio Métodos Cuantitativos Aplicados - 2020"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -39,11 +40,11 @@ Supongamos que la expresión matemática de arriba describe el salario promedio 
 
 **Explique lo siguiente:** 
 
-1) ¿Cómo podemos obtener la probabilidad de seleccionar a una persona con un salario menor a $10,000.00? 
+1) ¿Cómo podemos obtener la probabilidad de seleccionar a una persona con un salario menor a $10,000.00, de _forma computacional_? 
 
-2) ¿A qué se refiere Sebastián con utilizar una solución analítica? ¿A qué se refiere con utilizar simulaciones? ¿Que ventaja tiene una de la otra? 
+2) ¿A qué se refiere Sebastián con utilizar una solución analítica? ¿A qué se refiere con utilizar simulaciones computacionales? ¿Que ventaja (si hay) tiene una de la otra? 
 
-3) ¿Qué pasos hay que seguir para calcular dicha probabilidad? 
+3) ¿Qué pasos hay que seguir para calcular dicha probabilidad, de _forma computacional_? 
 
 **Calcule:** 
 
@@ -70,6 +71,10 @@ Supongamos que la expresión matemática de arriba describe el salario promedio 
 **Responda lo siguiente:**
 
 1. ¿Qué es una muestra? 
+
+2. ¿Qué es una mestra aleatoria? 
+
+3. ¿Por qué es importante trabajar con muestras aleatorias?
 
 **Lea el siguiente código:**
 
@@ -107,4 +112,7 @@ muestras %>%
 2) ¿Qué es la distribución muestral de la media? 
 
 3) Obtenga el Error Estándar de la distribución muestral del salario promedio. 
+
+4) ¿Cuáles son las similitudes y diferencias entre la distribución de probabilidad de una variable aleatoria y la distribución muestral de un estimador?
+
 
