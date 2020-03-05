@@ -12,7 +12,7 @@ En esta sesión vimos como resolver algunos problemas de obtención de probabili
 
 ### Sesión 2. Cuestionario de repaso. 
 
-En esta sesión se hizo un cuestionario de repaso para sacar dudas de los estudiantes, repasando los temas que Sebastián había ya revisado en su clase. El cuestionario se encuentra dentro de la carpeta de Sesión 3. El cuestionario con las respuestas puede consultarse [aquí](https://presentaciones.juvenalcampos.com/mca2020/sesion2/).
+En esta sesión se hizo un cuestionario de repaso para sacar dudas de los estudiantes, repasando los temas que Sebastián había ya revisado en su clase. El cuestionario se encuentra dentro de la carpeta de Sesión 3. El cuestionario con las respuestas puede consultarse [aquí]().
 
 
 
