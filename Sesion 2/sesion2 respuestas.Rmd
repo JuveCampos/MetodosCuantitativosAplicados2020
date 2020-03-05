@@ -1,0 +1,296 @@
+---
+title: "Sesion 2"
+author: "Laboratorio Métodos Cuantitativos Aplicados - 2020"
+output:
+  prettydoc::html_pretty:
+    theme: leonids
+    highlight: github
+---
+
+<style>
+  em {
+    color:blue;
+  }
+</style>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Laboratorio Sesión 2. 
+
+#### **Cuestionario de práctica y conceptos.** 
+
+El presente cuestionario está elaborado para probar que tan listos se encuentran ante un eventual exámen, así como para descubrir que tan preparados están sus apuntes.
+
+
+## Problema 1.  
+
+Sea 
+
+$$X \sim N(\mu = 30,000, \sigma = 10,000)$$
+
+Explique lo siguiente: 
+
+1) ¿Qué es X? 
+
+_Una variable aleatoria._
+
+2) ¿Qué valores puede tomar? ¿Es discreta o contínua? 
+
+_Es una variable aleatoria contínua, por lo que puede tomar todos los valores posibles dentro de un intervalo. En este caso, los valores que puede tomar son todos los valores desde menos infinito a más infinito._
+
+_Obviamente, es muy poco probable que tome valores por debajo del cero o por encima de 100,000._
+
+3) ¿Cómo leería la expresión matemática de arriba? 
+
+_"X es una variable aleatoria que distribuye Normal con media igual a 30,000 y desviación estándar igual a 10,000"_
+
+## Problema 2. 
+
+Supongamos que la expresión matemática de arriba describe el salario promedio de los trabajadores de un país.
+
+
+**Explique lo siguiente:** 
+
+1) ¿Cómo podemos obtener la probabilidad de seleccionar a una persona con un salario menor a $10,000.00, de _forma computacional_? 
+
+_A través de simular n veces la realización de la variable aleatoria y obtener las proporciones de cada realización._
+
+_Recordemos que la probabilidad de ocurrencia de algo es la razón de la cantidad de veces que este algo ocurre dividida entre todos los eventos posibles._
+
+
+2) ¿A qué se refiere Sebastián con utilizar una solución analítica? ¿A qué se refiere con utilizar simulaciones computacionales? ¿Que ventaja (si hay) tiene una de la otra? 
+
+_Una solución analítica consiste en obtener la probabilidad de algo deduciendo una fórmula de probabilidad a partir de la fórmula matemática de su distribución._
+
+_Una solución computacional consiste en simular n realizaciones de una variable aleatoria y, a partir de esto, obtener las proporciones correspondientes a cada valor de la probabilidad._
+
+_Las ventajas del método computacional consisten en que no es necesario utilizar o derivar fórmulas matemáticas, ya que es el mismo procedimiento para todas las distribuciones de probabilidad._
+
+_Y también que no necesitamos ocupar cálculo._
+
+3) ¿Qué pasos hay que seguir para calcular dicha probabilidad, de _forma computacional_? 
+
+_Pasos:_
+
+* 1. Genere _n_ realizaciones de una variable aleatoria (donde n preferentemente debe ser un número muy grande). 
+
+* 2. Obtenga el numero total de observaciones que se encuentran en el rango de probabilidad de interés. 
+
+* 3. Divida este número de observaciones entre el total de los datos generados, _n_, y así obtendrá la probabilidad. 
+
+**Calcule:** 
+
+1) La probabilidad de seleccionar a una persona con un salario menor a $10,000.00
+
+```{r cache=FALSE, message=FALSE, warning=FALSE}
+
+# Librerias
+library(moderndive)
+library(tidyverse)
+
+# Generacion de datos 
+repeticiones <- 1e5
+
+# Obtenemos la proporcion de valores que 
+# cumplen con dicha condici'on 
+# CONDICI'ON: SALARIO MENOR A $10,000
+tibble(salarios = rnorm(100000, mean = 3e4, sd = 1e4)) %>% 
+  summarise(num_cumplen_condicion = 
+              sum(salarios < 10000),
+            prop_cumplen_condicion = 
+              num_cumplen_condicion/repeticiones)
+
+```
+
+_La probabilidad ronda el 2 %_
+
+## Problema 3. 
+
+1) ¿Qué es la desviación estándar? ¿En qué unidades está medida? 
+
+_La desviación estándar es un promedio estandarizado de las desviaciones de cada observación con respecto a la media._
+
+_La desviación estándar está medida en las mismas unidades que la variable original (personas, dinero, etc.)._
+
+## Problema 4. 
+
+**Responda lo siguiente: **
+
+1) A partir de sus definiciones, ¿Cual es la diferencia entre _estimador_ y _estimación_? 
+
+
+_Un **estimador** es un estadístico (esto es, una función de la muestra) usado para estimar un parámetro desconocido de la población, mientras que la estimación es el resultado del cálculo del estimador (un dato númerico)._
+
+
+2) ¿Cuales son las características deseables de un estimador? Explique en qué consisten cada una de estas. 
+
+_Un estimador ideal debe ser insesgado con respecto al parámetro poblacional que se desea estimar (propiedad absoluta) y debe ser eficiente (presentar un menor Error estándar que otros estimadores para el mismo parámetro poblacional). Esta propiedad o característica es relativa, porque se compara con otros indicadores._
+
+3) ¿En qué casos sacamos estimaciones? ¿Qué es lo que queremos estimar? 
+
+
+_Queremos sacar estimaciones cuando no conocemos los parámetros poblacionales._
+
+## Problema 5. 
+
+**Responda lo siguiente:**
+
+1. ¿Qué es una muestra? 
+
+_Es un subconjunto de elementos de una población._
+
+2. ¿Qué es una muestra aleatoria? 
+
+_Es un subconjutno de elementos de una población seleccionados de manera aleatoria._
+
+3. ¿Por qué es importante trabajar con muestras aleatorias?
+
+_Porque estas muestras minimizan el error estándar y la probabilidad de tener sesgos en las estimaciones._
+
+**Lea el siguiente código:**
+
+```{r, eval = FALSE}
+
+# Librerias
+library(moderndive) # Contiene la funcion rep_sample_n()
+library(tidyverse) # Contiene pipa, la funcion 
+# tibble y los verbos dplyr
+
+# Generacion de datos 
+x <- tibble(salarios = rnorm(10000, mean = 3e4, sd = 1e4))
+## Generamos una tibble con 10,000 observaciones 
+# aleatorias con media igual a 30,000 y 
+# desviacion estandar de 10,000
+
+# Generación de muestras: 
+muestras <- x %>% 
+  rep_sample_n(size = 10, 
+               replace = F, 
+               reps = 100) 
+## Generamos 100 muestras aleatorias 
+# sin reemplazo de tamaño 100, teniendo como 
+# resultado una tibble de  10*100 = 1,000 renglones. 
+
+# Obtención de las medias muestrales
+muestras %>%
+  summarise(salario_promedio = mean(salarios))
+## Obtenemos las medias de las observaciones 
+# contenidas en las 100 muestras, teniendo como 
+# resultado 100 medias. 
+
+```
+
+```{r, eval = TRUE, echo=FALSE, cache=FALSE, warning=FALSE}
+
+# Librerias
+library(moderndive) # Contiene la funcion rep_sample_n()
+library(tidyverse) # Contiene pipa, la funcion 
+# tibble y los verbos dplyr
+
+# Generacion de datos 
+x <- tibble(salarios = rnorm(10000, mean = 3e4, sd = 1e4))
+## Generamos una tibble con 10,000 observaciones 
+# aleatorias con media igual a 30,000 y 
+# desviacion estandar de 10,000
+
+# Generación de muestras: 
+muestras <- x %>% 
+  rep_sample_n(size = 10, 
+               replace = F, 
+               reps = 100) 
+## Generamos 100 muestras aleatorias 
+# sin reemplazo de tamaño 100, teniendo como 
+# resultado una tibble de  10*100 = 1,000 renglones. 
+
+```
+
+**Explique:**
+
+1) ¿Qué hace cada línea del código?
+
+*Se explica en los comentarios contenidos en el código*
+
+### Problema 6. 
+
+**Responda lo siguiente:**
+
+1) ¿Qué es el error estándar? 
+
+_Es la desviación estándar de los errores muestrales. El error muestral es la diferencia entre la media muestral y la media poblacional._
+
+2) ¿Qué es la distribución muestral de la media? 
+
+_Es la distribución de la media de cada muestra._
+
+3) Obtenga el Error Estándar de la distribución muestral del salario promedio. 
+
+```{r}
+
+# El error estandar es la desviacion estandar 
+# de los errores muestrales de la estimacion de la media. 
+
+# 1. Tomamos las muestras
+EE1 <- muestras %>%
+  # 2. Les sacamos la media
+  summarise(salario_promedio = mean(salarios)) %>% 
+  # 4. Obtenemos el error estandar
+  summarise(ErrorEstandar = sd(salario_promedio))
+
+# Imprimimos el error estandar. 
+print(EE1)
+
+```
+
+<!-- **El Error Estándar es de 2,981.4** -->
+
+4) ¿Cuáles son las similitudes y diferencias entre la distribución de probabilidad de una variable aleatoria y la distribución muestral de un estimador?
+
+_Similitudes: Que ambas son variables aleatorias._
+
+_Diferencias: Ambas se encuentran en torno a la media, solo que la distribución muestral de la media lo hace con una menor desviación estándar._
+
+```{r}
+
+# Grafica de la distribucion de probabilidad de una variable
+poblacion_salarios <- 
+  tibble(salario = rnorm(1e6, mean = 30000, sd = 10000)) 
+
+poblacion_salarios %>%
+  ggplot(aes(x = salario)) +
+  geom_density(color = "red") 
+
+# Grafica de la distribucion muestral de un estimador (media). 
+medias_muestrales_salarios <- 
+  tibble(salario = rnorm(1e6, mean = 30000, sd = 10000)) %>% 
+  rep_sample_n(size = 5, 
+               replace = F, 
+               reps = 1000) %>%
+  summarise(salario_promedio = 
+              mean(salario))
+
+medias_muestrales_salarios %>% 
+  ggplot(aes(x = salario_promedio)) +
+  geom_density(color = "blue") + 
+  lims(x = c(15000,45000))
+
+# Juntandolas a ambas
+ggplot() + 
+  geom_density(data = poblacion_salarios, 
+               aes(x = salario),
+               color = "red") + 
+  geom_density(data = medias_muestrales_salarios, 
+               aes(x = salario_promedio),
+               color = "blue") + 
+  geom_vline(xintercept = 30000, 
+             linetype = "dashed"
+             )
+
+
+
+```
+
+
+
