@@ -1,0 +1,131 @@
+---
+title: "respuestas"
+author: "Juvenal Campos"
+date: "3/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r message=FALSE, cache=FALSE, warning=FALSE}
+# Librerias
+library(tidyverse)
+library(moderndive)
+
+# Problema 1 - Vitamina C ----
+p = 0.5
+total_sims <- 1e6
+
+enfermos <- tibble(enfermos = 
+                     rbinom(n = total_sims, 
+                            size = 10, 
+                            prob = 0.5)) 
+
+# Probabilidad de encontrar 8 o mas enfermos en una muestra de 10 
+enfermos %>% 
+  count(enfermos) %>% 
+  mutate(prop = n/total_sims) %>% 
+  filter(enfermos >= 8) %>% 
+  summarise(prob = sum(prop))
+```
+
+```{r}
+
+# Problema 2 ----
+p = 1/5
+chiripa <- tibble(aciertos = 
+                    rbinom(n = total_sims, 
+                           size = 100, 
+                           prob = p))
+
+# Proporciones
+chiripa %>% 
+  count(aciertos) %>% 
+  mutate(prop = n/total_sims) %>% 
+  ggplot(aes(x = aciertos, y = prop)) + 
+  geom_col()
+
+```
+
+```{r}
+# Problema 3 ----
+accidentes <- tibble(eventos = 
+                       rpois(n = total_sims, 
+                             lambda = 2))
+
+# Distribuci'on de los accidentes: 
+accidentes %>% 
+  count(eventos) %>% 
+  mutate(prop = n/total_sims) %>% 
+  ggplot(aes(x = eventos, y = prop)) + 
+  geom_col()
+
+# Probabilidad de que haya cero accidentes
+accidentes %>% 
+  count(eventos) %>% 
+  mutate(prop = n/total_sims) %>% 
+  filter(eventos == 0)
+
+# A lo sumo 3 accidentes en dos semanas
+accidentes <- tibble(eventos = 
+                       rpois(n = total_sims, 
+                             lambda = 4))
+
+accidentes %>% 
+  count(eventos) %>% 
+  mutate(prop = n/total_sims) %>% 
+  filter(eventos <= 3) %>% 
+  summarise(prob_interes = sum(prop))
+
+```
+
+
+```{r}
+# Problema 4 ----
+coches <- tibble(cantidad = 
+                   rnorm(n = total_sims, 
+                         mean = 25.5 , 
+                         sd = 4.5))
+
+# Probabilidad acumulada que deseamos!
+coches %>% 
+  summarise(num_cumplen_condicion = 
+              sum(cantidad >= 30),
+            prop_cumplen_condicion = 
+              num_cumplen_condicion/total_sims)
+
+
+```
+
+```{r}
+# Problema 5 ----
+# Oso polar
+
+# No conocemos la dist. poblacional 
+
+# Datos
+mean <- 980
+s <- 105
+n <- 50
+
+# Obtenemos el Error Est'andar con la f'ormula
+EE = s/sqrt(n)
+
+# Obtenemos el intervalo de confianza al 95%
+# I.C. = media +- 1.96 * EE con confianza del 95 %
+
+ICsup <- 980 +  1.96 * EE
+ICinf <- 980 -1.96 * EE
+
+(intConfianza95 <- tibble(LimInf = ICinf, 
+                          LimSup = ICsup))
+
+# La media del peso de los osos polares 
+## se encuentra entre 951 y 10009 libras 
+## con un nivel de confianza del 95%
+
+# Se puede tener confianza en que la estimación muestral de 980 libras está a no más de +-􏰋 29 libras de la media poblacional.
+
+```
