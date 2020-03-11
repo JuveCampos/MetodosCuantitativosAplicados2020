@@ -14,5 +14,7 @@ En esta sesión vimos como resolver algunos problemas de obtención de probabili
 
 En esta sesión se hizo un cuestionario de repaso para sacar dudas de los estudiantes, repasando los temas que Sebastián había ya revisado en su clase. El cuestionario se encuentra dentro de la carpeta de Sesión 3. El cuestionario con las respuestas puede consultarse [aquí](https://presentaciones.juvenalcampos.com/mca2020/sesion2/).
 
+### Problemas selectos.
 
+Selección de problemas del libro de Estadística de Mendenhall, resueltos con el método de simulaciones visto en clase. Puede visitarlo en el siguiente [enlace](https://presentaciones.juvenalcampos.com/MCA2020/ProblemasSelectos/problemasSelectos.pdf).
 
