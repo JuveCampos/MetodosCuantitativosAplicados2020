@@ -18,3 +18,7 @@ En esta sesión se hizo un cuestionario de repaso para sacar dudas de los estudi
 
 Selección de problemas del libro de Estadística de Mendenhall, resueltos con el método de simulaciones visto en clase. Puede visitarlo en el siguiente [enlace](https://presentaciones.juvenalcampos.com/MCA2020/ProblemasSelectos/problemasSelectos.pdf).
 
+### Sesión 3. Repaso de la tarea 3. 
+
+Repaso de la tercera tarea. Puede consultar el código en este [enlace](https://rpubs.com/Juve_Campos/mca2020sesion3). 
+
