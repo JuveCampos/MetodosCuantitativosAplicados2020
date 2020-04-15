@@ -25,6 +25,8 @@
 ## ¿Como determinaría usted, si la política pública tuvo algún 
 ## efecto, positivo o negativo, sobre el rendimiento de los estudiantes?
 
+# ______________
+
 # Librerias ----
 library(tidyverse)
 library(moderndive)

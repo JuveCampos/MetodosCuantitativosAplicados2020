@@ -28,9 +28,8 @@
 ## __________________________________________________________________
 
 # Librerias ----
-library(__________) # Para generar muestreos
-library(__________) # Para manipular bases de datos y usar la pipa
-
+library(moderndive) # Para generar muestreos
+library(tidyverse) # Para manipular bases de datos y usar la pipa
 
 # La base de datos: ----
 # Calificaciones de los estudiantes
@@ -66,13 +65,12 @@ datos %>%
 # (Estimación puntual)
 
 datos %>% 
-  group_by(__________) %>% 
-  summarise(media_grupo = mean(__________)) %>% 
-  summarise(diferencia_medias = diff(_________))
+  group_by(condicion) %>% 
+  summarise(media_grupo = mean(calificaciones)) %>% 
+  summarise(diferencia_medias = diff(media_grupo))
 
-
-# La diferencia es de ___ punto(s) en la calificacion. 
-# El grupo _____________ tiene un mayor promedio. 
+# La diferencia es de 1.09 punto(s) en la calificacion. 
+# El grupo transferencia tiene un mayor promedio. 
 
 
 # PASO 2. Determinamos la prueba de Hipótesis. ----
@@ -84,21 +82,20 @@ datos %>%
 ## ¿CUAL SERÍA LA PRUEBA DE HIPÓTESIS QUE TENDRÍAMOS QUE FORMULAR
 ## PARA VER SI LOS DATOS APOYAN LA HIPÓTESIS DEL DR. JUAN NULO? 
 
-## H_0: ____________________________________________
-
-## H_a: ____________________________________________
+## H_0: La transferencia no tiene un impacto en las calificaciones.
+## H_a: La transferencia tiene un impacto en las calificaciones.
 
 ## ¿QUÉ TENEMOS QUE HACER PARA LLEVAR A CABO LA PRUEBA DE HIPÓTESIS? 
 
-## _________________________________________________________________
-
+## Simular una población que represente a la hipotesis nula 
 
 # PASO 3. MÉTODO DE GENERACIÓN DE MUESTRAS. ----
 
 ## ¿CUALES SON LOS DOS MÉTODOS DE GENERACIÓN DE MUESTRAS VISTOS 
 ## EN CLASE HASTA AHORA? 
 
-# __________________________________________________________________
+# 1. Permutaciones. 
+# 2. Bootstrap.
 
 # PARA RESOLVER EL PRESENTE PROBLEMA, VAMOS A UTILIZAR EL MÉTODO
 # DE PERMUTACIONES! 😉 ESTE MÉTODO, AL REVOLVER POR EFECTO DEL AZAR
@@ -113,30 +110,29 @@ datos %>%
 dist <- datos %>% 
 # Generamos la muestra  
   rep_sample_n(size = nrow(datos), 
-               replace = _____, 
-               reps = _____) %>%
+               replace = FALSE, 
+               reps = 10000) %>%
   # Generamos una nueva columna con los valores permutados
-  _______(califPerm = ________(calificaciones,
-                            replace = _____)) %>%
+  mutate(califPerm = sample(calificaciones,
+                            replace = FALSE)) %>%
   # Agrupamos por muestra y por grupo del experimento
-  group_by(replicate, __________) %>%
+  group_by(replicate, condicion) %>%
   # Obtenemos las medias de las calificaciones y de las calif. permutadas
-  summarise(mediaCalif = mean(_____________),
-            mediaCalifPerm = mean(____________)) %>% 
+  summarise(mediaCalif = mean(calificaciones),
+            mediaCalifPerm = mean(califPerm)) %>% 
   # Desagrupamos (para que hacemos esto?)
   ungroup() %>% 
   # Sacamos la diferencia de promedios permutados
   group_by(replicate) %>% 
-  summarise(diffMedias = diff(_____________), 
-            diffMediasPerm = diff(_____________)) # Distribucion nula
-
+  summarise(diffMedias = diff(mediaCalif), 
+            diffMediasPerm = diff(mediaCalifPerm)) # Distribucion nula
 
 # Graficamos la distribucion de las diferencias
 dist %>% 
   ggplot() + 
-  geom_density(aes(________________)) + 
+  geom_density(aes(x = diffMediasPerm)) + 
   # Metemos una linea en donde nos dió la diferencia de medias original
-  geom_vline(xintercept = ___________, linetype = "dashed", color = "red") + 
+  geom_vline(xintercept = 1.09, linetype = "dashed", color = "red") + 
   # Metemos una linea a partir de la cual queden fuera los ultimos 2.5% de los datos
   geom_vline(xintercept = quantile(dist$diffMediasPerm, 0.975), color = "blue") + 
   # Metemos una linea a partir de la cual queden fuera los primeros 2.5% de los datos
@@ -144,14 +140,19 @@ dist %>%
 
 # OBTENEMOS EL p-value, la probabilidad de que obtener un valor igual o más extremo 
 casosPositivos <- dist %>% 
-  filter(dist$diffMediasPerm > _________) %>% 
+  filter(dist$diffMediasPerm > 0.8) %>% 
   nrow()
 
 # Probabilidad de que esto ocurra (o que ocurra un efecto mas fuerte)
 casosPositivos/10000
 
 # Entonces, de aqui vemos que el evento es altamente 
-# _____________ que pase por puro azar, y podemos decir ç
-# que la evidencia __ apoya la aseveracion de que el azar 
+# IMPROBABLE que pase por puro azar, y podemos decir 
+# que la evidencia NO apoya la aseveracion de que el azar 
 # es el causante de dicho comportamiento en las calificaciones, con 
-# un __ % de confianza. 
+# un 95 % de confianza. 
+
+# SI HAY UN EFECTO DE LAS TRANSFERENCIAS SOBRE EL 
+## RENDIMIENTO DE LOS ALUMNOS.
+
+
