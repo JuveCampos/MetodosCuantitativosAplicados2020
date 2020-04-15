@@ -22,3 +22,13 @@ Selección de problemas del libro de Estadística de Mendenhall, resueltos con e
 
 Repaso de la tercera tarea. Puede consultar el código en este [enlace](https://rpubs.com/Juve_Campos/mca2020sesion3). 
 
+### Sesión 4. Revisión del examen. 
+
+Sesión de revisión del exámen parcial. No se generó contenido publicable para esta sesión. 
+
+### Sesión 5. Repaso del metodo de generación de muestras de Permutaciones y conceptos básicos de prueba de Hipótesis. 
+
+Sesión de repaso del mñetodo de permutaciones a partir del experimento de las transferencias de dinero a estudiantes de preparatoria. Script para ir completando a lo largo de la sesión. 
+
+
+
