@@ -28,7 +28,7 @@ Sesión de revisión del exámen parcial. No se generó contenido publicable par
 
 ### Sesión 5. Repaso del metodo de generación de muestras de Permutaciones y conceptos básicos de prueba de Hipótesis. 
 
-Sesión de repaso del mñetodo de permutaciones a partir del experimento de las transferencias de dinero a estudiantes de preparatoria. Script para ir completando a lo largo de la sesión. 
+Sesión de repaso del método de permutaciones a partir del experimento de las transferencias de dinero a estudiantes de preparatoria. Script para ir completando a lo largo de la sesión. 
 
 
 
