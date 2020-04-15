@@ -1,0 +1,222 @@
+---
+title:  |
+    | Métodos Cuantitativos Aplicados - 2020
+    | Segundo examen parcial - Sección práctica
+author: "Sebastián Garrido de Sierra"
+header-includes:
+  - \usepackage[spanish,es-nodecimaldot]{babel}
+output: 
+  pdf_document:
+    latex_engine: xelatex
+    fig_caption: true
+    toc: false
+    toc_depth: 2
+    number_sections: false
+mainfont: Helvetica Neue
+fontsize: 12pt
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = TRUE)
+library(pacman)
+p_load(infer, knitr, tidyverse)
+```
+
+## Instrucciones {-}
+
+A continuación encontrarás los **tres** ejercicios obligatorios y **uno** opcional que integran la sección práctica de la reposición del segundo examen parcial. Te recomiendo que **antes de comenzar a hacerlos**, primero leas todos los ejercicios y que empieces con los que crees que son más fáciles.
+
+**Tienes 60 minutos para responder esta parte del examen.**
+
+Recuerda que puedes consultar tus apuntes, los libros del curso y hacer búsquedas en Internet para resolver tus dudas. 
+
+Sin embargo, está **estrictamente prohibido** que te comuniques con algune de tus compañeres por cualquier medio.
+
+\vspace{2pt}
+
+## Requisitos mínimos {-}
+
+- Genera un proyecto en RStudio y guárdalo con el nombre `[apellido]_2ndo_examen_mca_2020_rep`. Por ejemplo, `garrido_2ndo_examen_mca_2020_rep`. 
+
+- Crea dos carpetas dentro del proyecto. La primera se llamara `01_datos` y la segunda `02_codigo`. 
+
+- Crea un script y guárdalo con el nombre `[apellido]_codigo_2ndo_examen_mca_2020_rep` en el folder `02_codigo`. Por ejemplo, `garrido_codigo_2ndo_examen_mca_2020_rep`. 
+
+- Titula la primera sección de tu script como `### Paquetes`. En esta sección cargarás los paquetes que contienen las funciones que necesitarás para resolver el examen. 
+
+- Para cada uno de los siguientes cuatro ejercicios, deberás usar un comentario para genera una sección específica dentro del código de la siguiente forma:
+
+\vspace{2pt} 
+```{r, eval=F}
+
+### Paquetes ----
+### Ejercicio 1 ----
+...
+### Ejercicio XX ----
+```
+
+**Perderas 5 puntos por cada ejercicio para el que no hagas esto**.
+
+## Ejercicio 1 (40 pts.) {-}
+
+El siguiente código te permitirá cargar una muestra aleatoria con los resultados de la elección presidencial de **100** de las más de **156 mil casillas** que se instalaron en la elección presidencial de 2018.
+
+
+```{r, warning=F, message=F}
+computos <- 
+  read_csv("http://segasi.com.mx/clases/cide/datos/muestra_c_pdte_2018.csv")
+```
+
+La base de datos incluye seis columnas: `entidad`, `distrito`, `clave casilla` (id único de cada casilla) y `vs_anaya`, `vs_meade` y `vs_amlo`. Las tres últimas variables contienen el porcentaje de votos obtenidos por el respectivo candidato.
+
+Elige una de las columnas `vs_anaya`, `vs_meade` y `vs_amlo` y haz lo siguiente:
+
+1) Estima la media del porcentaje de votos obtenidos por el candidato que seleccionaste (5 pts.).
+
+```{r, echo=F, eval=F}
+computos %>% 
+  summarise(media_muestral_anaya = mean(vs_anaya, na.rm = T),
+            media_muestral_meade = mean(vs_meade, na.rm = T),
+            media_muestral_amlo = mean(vs_amlo, na.rm = T))
+```
+
+2) Calcula el error estándar de la distribución muestral asociada al estimador que calculaste en el punto anterior (10 pts.).
+```{r, echo=F, eval=F}
+# Anaya
+set.seed(1)
+computos %>% 
+  rep_sample_n(size = nrow(computos), replace = T, reps = 5000) %>% 
+  summarise(media_muestral_bootstrap = mean(vs_anaya, na.rm = T)) %>%
+  summarise(error_estandar = sd(media_muestral_bootstrap, na.rm = T))
+  
+# Meade
+set.seed(1)
+computos %>% 
+  rep_sample_n(size = nrow(computos), replace = T, reps = 5000) %>% 
+  summarise(media_muestral_bootstrap = mean(vs_meade, na.rm = T)) %>%
+  summarise(error_estandar = sd(media_muestral_bootstrap, na.rm = T))
+  
+# AMLO
+set.seed(1)
+computos %>% 
+  rep_sample_n(size = nrow(computos), replace = T, reps = 5000) %>% 
+  summarise(media_muestral_bootstrap = mean(vs_amlo, na.rm = T)) %>%
+  summarise(error_estandar = sd(media_muestral_bootstrap, na.rm = T))
+```
+
+3) Construye un intervalo de confianza con un nivel de confianza de 95% (15 pts.)
+
+```{r, echo=F, eval=F}
+# Anaya
+set.seed(1)
+computos %>% 
+  rep_sample_n(size = nrow(computos), replace = T, reps = 5000) %>% 
+  summarise(media_muestral_bootstrap = mean(vs_anaya, na.rm = T)) %>% 
+  summarise(limite_inf = quantile(media_muestral_bootstrap, 0.015),
+            limite_sup = quantile(media_muestral_bootstrap, 1 - 0.015))
+  
+# Meade
+set.seed(1)
+computos %>% 
+  rep_sample_n(size = nrow(computos), replace = T, reps = 5000) %>% 
+  summarise(media_muestral_bootstrap = mean(vs_meade, na.rm = T)) %>% 
+  summarise(limite_inf = quantile(media_muestral_bootstrap, 0.015),
+            limite_sup = quantile(media_muestral_bootstrap, 1 - 0.015))
+
+# AMLO
+set.seed(1)
+computos %>% 
+  rep_sample_n(size = nrow(computos), replace = T, reps = 5000) %>% 
+  summarise(media_muestral_bootstrap = mean(vs_amlo, na.rm = T)) %>% 
+  summarise(limite_inf = quantile(media_muestral_bootstrap, 0.015),
+            limite_sup = quantile(media_muestral_bootstrap, 1 - 0.015))
+```
+
+4) Supongamos que todo este análisis es para el equipo de campaña del candidato que elegiste (15 pts.). 
+- ¿Crees que estarían satisfechos (en términos estadísticos) con los resultados que les entregas?
+- ¿Qué les sugerirías para mejorar tu próxima estimación?
+
+
+## Ejercicio 2 (20 pts.) {-}
+
+Además de toda la magia que `ggplot2` ofrece para graficar, es un paquete que viene con varias bases de datos incluidas. Una de ellas es `midwest`, una base de datos con **28** variables sobre los **437** condados en el *Midwest* de Estados Unidos.
+
+Para usar estos datos, solo debes escribir `midwest` en RStudio. 
+
+1) Calcula el máximo de la variable `poptotal` usando los datos de *toda* la base (5 pts).
+
+```{r, eval = F, echo = F}
+max(midwest$poptotal)
+```
+
+2) Usando lo visto en clase, determina **computacionalmente** si el máximo es un estimador insesgado (15 pts).
+
+```{r, eval = F, echo = F}
+midwest %>% 
+  rep_sample_n(size = 100, replace = F, reps = 1000) %>% 
+  summarise(maximo_muestral = max(poptotal)) %>% 
+  summarise(promedio_maximo_muestral = mean(maximo_muestral))
+```
+
+## Ejercicio 3 (40 pts.) {-}
+
+1) Simula la distribución de probabilidad de una variable aleatoria con las siguientes especificaciones (5 pts.):
+
+- Se distribuye como una Normal, con $\mu=7$ y $\sigma=2.5$;
+- Debes usar 100 mil procesos aleatorios para generar los datos, para quedarte con un vector de las mismas dimensiones.
+- Guarda las 100 mil observaciones en un vector llamado `valores`, que a su vez debes guardar en un `tibble`. Debes guardar el `tibble` en un objeto llamado `datos`.
+- Usa `set.seed(89)` **antes** de simular los datos
+
+```{r, eval = F, echo = F}
+set.seed(89)
+datos <- tibble(valores = rnorm(n = 1e5, mean = 7, sd = 2.5))
+```
+
+2) Toma **1,000** muestras aleatorias de tamaño **500** de `datos`. Después, haz lo siguiente (15 pts.):
+
+- Para cada una de las muestras, calcula la media
+- Calcula de forma *computacional* el error estándar de la distribución muestral utilizando las *1,000* estimaciones que recien calculaste
+```{r, eval = F, echo = F}
+datos %>% 
+  rep_sample_n(size = 500, replace = F, reps = 1000) %>% 
+  summarise(media_muestral = mean(valores)) %>% 
+  summarise(error_estandar = sd(media_muestral))
+```
+
+3) Toma solo **una** muestra aleatoria de tamaño **500** de `datos`. Después, haz lo siguiente (20 pts.):
+
+- Calcula la media muestral
+- Calcula de forma *analítica* el error estándar de la distribución muestral asociada a tu estimador, usando el valor de la desviación estándar poblacional
+- Calcula de forma *analítica* el error estándar de la distribución muestral, asumiendo que -como suele ocurrir en la realidad- **no conoces** el valor de la desviación estándar poblacional.
+
+```{r, eval = F, echo = F}
+datos %>% 
+  rep_sample_n(size = 500, replace = F, reps = 1000) %>% 
+  summarise(media_muestral = mean(valores)) %>% 
+  summarise(error_estandar = sd(media_muestral))
+```
+
+## Ejercicio extra (40 pts.) {-}
+
+Copia y ejecuta el siguiente código:
+
+```{r, eval = F}
+foo <- 
+  tibble(valores = rnorm(n = 10000, mean = 14, sd = 3.5)) %>%
+  rep_sample_n(size = 500, replace = F, reps = 10000) %>% 
+  summarise(varianza_muestral = var(valores))
+```
+
+Después de hacerlo, deberías un `tibble` como este:
+
+```{r, echo = F}
+foo <- 
+  tibble(valores = rnorm(n = 10000, mean = 14, sd = 3.5)) %>%
+  rep_sample_n(size = 500, replace = F, reps = 10000) %>% 
+  summarise(varianza_muestral = var(valores))
+
+foo
+```
+
+Por favor, haz calcula y/o grafica todo lo que puedas a partir de la columna varianza muestral.
