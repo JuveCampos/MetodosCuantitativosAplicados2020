@@ -24,7 +24,43 @@ pacman::p_load(moderndive, tidyverse)
 ## H_a: Los jóvenes de 18 años tuvieron una participación MAYOR al 60% 
 
 # Datos: 
-datos <- read_csv("datosSeccionElectoralMorelos.csv")
+datos <- read_csv("datosSeccionElectoralMorelos.csv") %>% 
+  mutate(PART = (SV/LN)*100)
+
+mean(datos$PART)
+sd(datos$PART)
+
+# Mediante bootstrap, vamos a sacar el rango de los valores que pueden capturar al estimador puntual 
+
+dist_bootstrap <- datos %>% 
+  rep_sample_n(size = nrow(datos), 
+               replace = T, 
+               reps = 1000) %>% 
+  group_by(replicate) %>% 
+  summarise(media_bootstrap = mean(PART))
+
+# DIST. BOOTSTRAP NULA
+dist_bootstrap_nula <- dist_bootstrap + (60-mean(datos$PART))
+
+ggplot(dist_bootstrap, aes(x = media_bootstrap)) + 
+  #geom_density() + 
+  geom_density(data = dist_bootstrap_nula, color = "blue") +
+  geom_vline(xintercept = mean(datos$PART), color = 'red', linetype = 2) + 
+   geom_vline(xintercept = 60, color = 'green', linetype = 1) #+ geom_vline(xintercept = quantile(dist_bootstrap$media_bootstrap, 0.025), color = "blue") 
+#+ 
+  # geom_vline(xintercept = quantile(dist_bootstrap$media_bootstrap, 0.975), color = "blue")
+  
+# Ho: media == 60
+# Rechazamos la hipotesis nula de que la media sea igual a 60, y por lo tanto, podemos pensar que la media es diferente de 60. 
+
+
+
+
+
+
+
+
+
 
 
 

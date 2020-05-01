@@ -38,4 +38,41 @@ pacman::p_load(moderndive, tidyverse)
 # Datos ----
 tb <- read_csv("calificacionesExamen.csv")
 
+# Diferencia de medias
+diff_medias <- tb %>% 
+  group_by(calificador) %>% 
+  summarise(media = mean(calificaciones)) %>% 
+  summarise(diff_medias = diff(media)) %>% 
+  pull()
+
+# Para probar la hipotesis de que hay una diferencia de medias, utilizaremos el metodo de permutaciones. 
+
+dist <-tb %>% 
+  rep_sample_n(size = nrow(tb), 
+               replace = F, 
+               reps = 1000) %>% 
+  mutate(calif_perm = sample(calificaciones, 
+                             replace = F)) %>% 
+  group_by(replicate, calificador) %>% 
+  summarise(mediaCalifPerm = mean(calif_perm)) %>% 
+  ungroup() %>% 
+  group_by(replicate) %>% 
+  summarise(diffMediasPerm = diff(mediaCalifPerm))
+
+dist %>% 
+  ggplot(aes(x = diffMediasPerm)) + 
+  geom_density() + 
+  geom_vline(xintercept = diff_medias, 
+             color = "green", linetype = 2) + 
+  geom_vline(xintercept = mean(dist$diffMediasPerm), 
+             color = "red", linetype = 2) + 
+  geom_vline(xintercept = quantile(dist$diffMediasPerm, 0.025), color = "blue") + 
+  geom_vline(xintercept = quantile(dist$diffMediasPerm, 0.975), color = "blue")
+
+#pvalue 
+sum(dist$diffMediasPerm > diff_medias)/1000
+0.123 > 0.05
+
+# Hay diferencia significativa entre un revisor y otro? 
+
 
