@@ -40,7 +40,7 @@ pacman::p_load(moderndive, tidyverse)
 # califSebas <- rnorm(n = 10, mean = 8.1, sd = 0.5) %>% 
 #   round(digits = 1)
 
-# Datos
+# Datos 
 tb <- tibble(calificaciones = append(califJuve, califSebas),
              calificador = c(rep("Juvenal", 10), 
                              rep("Sebastian", 10)))
