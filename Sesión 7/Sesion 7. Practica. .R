@@ -115,18 +115,21 @@ dist %>%
 
 # Datos: 
 
-LN <- round(runif(n = 200, min = 10, max = 500), 0)
-norm <- round(rnorm(n = 200, mean = 0, sd = 1), 3)
-prop <- round((norm - min(norm))/max(norm - min(norm)),2)
-SV <- round(LN * prop, 0)
-NV <- LN - SV
-SECCION <- sample(x = 1:1000, size = 200, replace = F) %>% sort()
+# LN <- round(runif(n = 200, min = 10, max = 500), 0)
+# norm <- round(rnorm(n = 200, mean = 0, sd = 1), 3)
+# prop <- round((norm - min(norm))/max(norm - min(norm)),2)
+# SV <- round(LN * prop, 0)
+# NV <- LN - SV
+# SECCION <- sample(x = 1:1000, size = 200, replace = F) %>% sort()
+# 
+# datos <- tibble(EDAD = 18, 
+#                 SECCION = SECCION, 
+#                 LN = LN, SV = SV, NV = NV) 
+# write.csv(datos, "datosSeccionElectoralMorelos.csv", 
+#           na = "", row.names = F, fileEncoding = "UTF-8")
 
-datos <- tibble(EDAD = 18, 
-                SECCION = SECCION, 
-                LN = LN, SV = SV, NV = NV) 
-write.csv(datos, "datosSeccionElectoralMorelos.csv", 
-          na = "", row.names = F, fileEncoding = "UTF-8")
+datos <- read_csv("datosSeccionElectoralMorelos.csv") %>% 
+  mutate(PART = (SV/LN)*100)
 
 # %>% 
 #   mutate(PART = (SV/LN)*100)
@@ -147,15 +150,24 @@ dist_bootstrap <- datos %>%
 # Error Estandar Bootstrap
 sd(dist_bootstrap$media_bootstrap)
 
+# DIST. BOOTSTRAP NULA
+dist_bootstrap_nula <- dist_bootstrap + (60-mean(datos$PART))
+
+
 # Grafica dist Bootstrap
 ggplot(dist_bootstrap, aes(x = media_bootstrap)) + 
   geom_density() + 
+  #geom_density(data = dist_bootstrap_nula, color = "blue") + 
   geom_vline(xintercept = mean(datos$PART), color = "red", linetype = 10) + 
   geom_vline(xintercept = quantile(dist_bootstrap$media_bootstrap, 0.025), color = "blue", linetype = 1) + 
   geom_vline(xintercept = quantile(dist_bootstrap$media_bootstrap, 0.975), color = "blue", linetype = 1) + 
   geom_vline(xintercept = 60, color = "green", linetype = 1)
 
 # De aqui se ve que la evidencia no soporta la hipotesis nula (H_0) de que la media de la participacion electoral en jovenes de 18 anios es del 60%, con un 95% de confianza. 
+
+# p-value
+sum(dist_bootstrap$media_bootstrap >= 60)/length(dist_bootstrap$media_bootstrap)
+# Da cero por que el numero de muestreos bootstrap es muy pequeño
 
 # Igualmente, se ve que la estimacion de la media de la participacion de los jovenes de 18 anios, a partir de nuestra muestra, es de aprox. 55% con un intervalo de confianza al 95% de (52.22, 57.52).
 
