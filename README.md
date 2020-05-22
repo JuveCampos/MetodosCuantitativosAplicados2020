@@ -48,4 +48,4 @@ Revisión de las soluciones del tercer exámen parcial de la materia. **Esta ses
 
 ### Sesión 10. Regresión lineal, parte 1.
 
-Introducción a la creación e inspección de los modelos de regresión lineal en R. Revisamos la función `lm()` para generar modelos, la interpretación de los coeficientes, del `valor p`, la hipótesis que prueban esos `valores p`, una introducción al `R2` y un ejemplo de inferencia respecto a los estimadores utilizando un par de bases de datos (`pitufos` y ``LAhomes`).
+Introducción a la creación e inspección de los modelos de regresión lineal en R. Revisamos la función `lm()` para generar modelos, la interpretación de los coeficientes, del `valor p`, la hipótesis que prueban esos `valores p`, una introducción al `R2` y un ejemplo de inferencia respecto a los estimadores utilizando un par de bases de datos (`pitufos` y `LAhomes`).
