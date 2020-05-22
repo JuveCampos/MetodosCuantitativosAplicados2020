@@ -30,5 +30,19 @@ Sesión de revisión del exámen parcial. No se generó contenido publicable par
 
 Sesión de repaso del método de permutaciones a partir del experimento de las transferencias de dinero a estudiantes de preparatoria. Script para ir completando a lo largo de la sesión. 
 
+### Sesión 6. Repaso del método de Bootstrap. (_El mejor actor secundario_).
 
+Sesión de repaso del método Bootstrap. Orígen del nombre y porqué su creador lo considera como el _mejor actor secundario._ Igual en un anexo se observa como se comporta este metodo ante las muestras de tamaño pequeño. 
+
+### Sesión 7. Ejercicios selectos de prueba de hipótesis de diferencia de medias. 
+
+Sesión donde se presentaron dos ejercicios de prueba de hipótesis de diferencia de medias para su resolución en la sesión. El método para su resolución fué el método computacional de permutaciones y el método Bootstrap.  
+
+### Sesión 8. Revisión de tarea previo al tercer parcial. 
+
+Revisión de la tarea con ejercicios de prueba de hipótesis previo al tercere exámen parcial. **Esta sesión no generó material para compartir en este repositorio, al ser la respuesta de una tarea.**
+
+### Sesión 9. Revisión del tercer exámen parcial. 
+
+Revisión de las soluciones del tercer exámen parcial de la materia. **Esta sesión no generó material para compartr en este repositorio, al ser la respuesta de un exámen parcial.**
 
