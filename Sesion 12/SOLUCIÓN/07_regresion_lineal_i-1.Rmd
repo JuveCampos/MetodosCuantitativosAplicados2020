@@ -1,0 +1,272 @@
+---
+title: "Sesion 12" 
+subtitle: "Laboratorio - Métodos Cuantitativos Aplicados"
+author: "Sebastián Garrido de Sierra y Juvenal Campos"
+header-includes: \usepackage[spanish]{babel}
+output:
+  prettydoc::html_pretty:
+    theme: leonids
+    highlight: github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Sesión 12. Laboratorio Métodos Cuantitativos Aplicados. 
+
+## Sobre los coeficientes de la regresión lineal univariada y el $R^2$. 
+
+En los siguientes ejercicios trabajaras con la base de datos `advertising`, publicada por los autores de [An Introduction to Statistical Learning](http://www-bcf.usc.edu/~gareth/ISL/index.html). 
+
+```{r, message = F, warning = F}
+library(pacman)
+p_load(broom, janitor, moderndive, Rlab, tidyverse)
+
+# Base de datos de publicidad. 
+publicidad <- 
+  read_csv("http://segasi.com.mx/clases/cide/datos/Advertising.csv") %>%
+# Eliminamos el indice
+  select(-X1) %>% 
+# Limpiamos nombres
+  clean_names()
+
+# Exploramos la Base de datos
+publicidad
+
+```
+
+La base de datos incluye **200** renglones (uno por mercado) y **cuatro** variables: `tv`, `radio`,  `newspaper` y `sales`. Las primeras tres variables describen el presupuesto gastado en publicidad (en miles de dólares) por una compañía en el medio respectivo en cada mercado. La columna `sales` indica el número de unidades vendidas (en miles) por la compañía en el mercado correspondiente.  
+
+A partir de estos datos, resuelva los siguientes ejercicios: 
+
+# Ejercicio 1
+
+Estima manualmente, como hicimos en clase, $\beta_0$ y $\beta_1$ para el siguiente modelo:
+
+$$sales = \beta_0 + \beta_1 * radio + u$$
+
+**¿Qué estamos estimando?**
+
+**R:** Con el intercepto, las ventas base que tendría una empresa que no se anuncia en ninguno de los medios de comunicación. 
+
+Con el $\beta_1$, el efecto sobre las ventas que tiene el invertir un dólar en publicidad en la radio. 
+
+Recordemos, del laboratorio pasado, la fórmula para sacar $\beta_0$ y $\beta_1$: 
+
+* Para $\beta_1$: 
+
+$$\beta_1 = \dfrac{cov(y,x)}{var(x)}$$
+
+* Donde: 
+
+$$cov(x,y) = \dfrac{\Sigma(x_i-\hat{x})(y_i-\hat{y})}{n}$$
+
+* Y el $\beta_0$: 
+
+$$\beta_0 = mean(y) - \beta_1*mean(x)$$
+
+```{r}
+# Procesamos la base de datos de publicidad. 
+publicidad %>% 
+# Calculamos la desviacion de la var. radio  
+  mutate(dif_radio = radio - mean(radio),
+# Calculamos la desviacion de la var. sales         
+         dif_sales = sales - mean(sales),
+# Calculamos el producto de las diferencias
+         producto_dif = dif_radio*dif_sales,
+# Calculamos el producto de las diferencias al cuadrado
+         dif_radio_cuadrado = dif_radio^2) %>% 
+# Obtenemos beta_1 y beta_0 con las formulas.   
+  summarise(beta_1 = sum(producto_dif)/sum(dif_radio_cuadrado),
+            beta_0 = mean(publicidad$sales) - beta_1*mean(publicidad$radio))
+
+```
+
+
+# Ejercicio 2 
+
+Para verificar tus resultados, calcula un modelo lineal con la función `lm()` y guarda el resultado en un objeto llamado `modelo`. Después usa las funciones `summary()` y/o `tidy()` para obtener los coeficientes.
+
+```{r}
+# Generamos el modelo
+modelo <- lm(formula = sales ~ radio, 
+             data = publicidad)
+
+# Obtenemos mas información del modelo
+summary(modelo)
+
+# Lo hacemos tidy para sacarle información mas fácilmente
+tidy(modelo)
+```
+
+
+# Ejercicio 3 
+
+Usa la función `augment()` para extraer otro *chunk* de datos del objeto `modelo`. 
+
+A partir del `tibble` que obtendrás, haz una gráfica con dos capas. La primera es de puntos, para representar la relación entre `sales` y `radio` (acuérdate que las variables deben respetar cierto orden en los ejes).  
+
+La segunda capa es una gráfica de líneas, para representar los valores **predichos** por el modelo para `sales` y `radio`. 
+
+```{r}
+
+# Obtenemos los datos aumentados con augment: 
+augment(modelo)
+
+# .fitted es la columna que almacena los valores predichos
+## por el modelo de regresión lineal para el valor 
+## de X correspondiente
+
+# Graficamos el modelo aumentado: 
+augment(modelo) %>% 
+  ggplot() +
+# 1a capa: linea de los valores realoes
+  geom_point(aes(x = radio, y = sales)) +
+# 2a capa: linea de los valores predichos
+  geom_line(aes(x = radio, y = .fitted), 
+            color = "dodgerblue")
+```
+
+
+# Ejercicio 4
+
+Usa el método de bootstrap para generar la distribución muestral de $\hat \beta_0$ y $\hat \beta_1$. Después gráfica cada distribución (ojo: vas a tener que hacerlo en por lo menos dos *chunks* de código).
+
+**Primero para el intercepto: **
+
+```{r}
+# (Intercept) - B0
+publicidad %>% 
+  # Tomar 1k muestras bootstrap
+  rep_sample_n(size = nrow(publicidad), 
+               replace = T, 
+               reps = 1000) %>% 
+  # Calcular el modelo de regresión para cada muestra y tidyear
+  do(lm(formula = sales ~ radio, 
+        data = .) %>% 
+       tidy()) %>% 
+  # Desagrupar
+  ungroup() %>% 
+  # Filtrar para quedarnos con estimaciones del coeficiente de altura (B_1)
+  filter(term == "(Intercept)") %>%   
+  # Calcular el error estándar de la distribución muestral
+  ggplot(aes(estimate)) +
+  geom_density() + 
+  geom_vline(xintercept = mean(modelo$coefficients[1]), 
+             color = "red", 
+             linetype = 2) + 
+  labs(title = "Estimación del B_0 (Intercepto) mediante Bootstrap")
+```
+
+**Después, para el $\beta_1$**
+
+```{r}
+# radio - B1
+publicidad %>% 
+  # Tomar 1k muestras bootstrap
+  rep_sample_n(size = nrow(publicidad), replace = T, reps = 1000) %>% 
+  # Calcular el modelo de regresión para cada muestra y tidyear
+  do(lm(formula = sales ~ radio, data = .) %>% 
+       tidy()) %>% 
+  # Desagrupar
+  ungroup() %>% 
+  # Filtrar para quedarnos con estimaciones del coeficiente de altura (B 1)
+  filter(term == "radio") %>%   
+  # Calcular el error estándar de la distribución muestral
+  ggplot(aes(estimate)) +
+  geom_density() + 
+  geom_vline(xintercept = modelo$coefficients[2],
+             color = "red", 
+             linetype = 2) +
+  labs(title = "Estimación del B_1 (radio) mediante Bootstrap")
+
+```
+
+
+# Ejercicio 5
+
+Usa el método de bootstrap para calcular el error estándar de $\hat \beta_0$ y $\hat \beta_1$. Después usa `tidy(modelo)` para comparar tus resultados con los que calculó `lm()`.
+
+```{r}
+# (Intercept) - B0
+publicidad %>% 
+  # Tomar 1k muestras bootstrap
+  rep_sample_n(size = nrow(publicidad), replace = T, reps = 5000) %>% 
+  # Calcular el modelo de regresión para cada muestra y tidyear
+  do(lm(formula = sales ~ radio, data = .) %>% 
+       tidy()) %>% 
+  # Desagrupar
+  ungroup() %>% 
+  # Filtrar para quedarnos con estimaciones del coeficiente de altura (B 1)
+  filter(term == "(Intercept)") %>%   
+  # Calcular el error estándar de la distribución muestral
+  summarise(error_est = sd(estimate))
+
+# radio - B1
+publicidad %>% 
+  # Tomar 1k muestras bootstrap
+  rep_sample_n(size = nrow(publicidad), replace = T, reps = 5000) %>% 
+  # Calcular el modelo de regresión para cada muestra y tidyear
+  do(lm(formula = sales ~ radio, data = .) %>% 
+       tidy()) %>% 
+  # Desagrupar
+  ungroup() %>% 
+  # Filtrar para quedarnos con estimaciones del coeficiente de altura (B 1)
+  filter(term == "radio") %>%   
+  # Calcular el error estándar de la distribución muestral
+  summarise(error_est = sd(estimate))
+
+tidy(modelo)
+```
+
+Los errores son algo distintos. Sin embargo, los datos del error estándar son mejores estimaciones del error estándar que los obtenidos por el modelo, que aplica una aproximación teórica, más que una simulación computacional. 
+
+# Ejercicio 6
+
+Usa `summary(modelo)` o `glance(modelo)` para obtener -entre otras cosas- la $R^2$ de `modelo`.
+
+```{r}
+# Generamos nuevamente el modelo
+modelo <- lm(formula = sales ~ radio, data = publicidad)
+# Glanceamos el modelo
+glance(modelo)
+```
+
+
+Ahora échale un ojo a esta ecuación:
+
+$$\small r^2 = \frac{\sum (y_i - \bar y)^2 - \sum (y_i - \hat y)^2}{\sum (y_i - \bar y)^2}$$
+
+- **¿Cómo llamamos en clase a los tres componentes que están del lado derecho del símbolo de igual?**
+
+    + El primer elemento del numerador es la varianza total
+    
+    + En el segundo elemento del numerador está varianza no-explicada
+    
+- *¿Cómo llamamos en clase a al numerador y denominador de esta ecuación?*
+    
+    + El denominador es la varianza total
+    
+    
+- Usa esta fórmula para calcular a patita la $R^2$.
+
+```{r}
+# Calculamos el modelo
+modelo <- lm(formula = sales ~ radio, data = publicidad)
+
+# Aumentamos el modelo
+augment(modelo) %>% 
+# Datos menos la media (al cuadrado)
+  mutate(e_1 = (sales - mean(sales))^2,
+# Datos menos la estimación, al cuadrado         
+         e_2 = (sales - .fitted)^2) %>% 
+# Suma del primer término  
+  summarise(suma_e_1 = sum(e_1),
+# Suma del segundo término            
+            suma_e_2 = sum(e_2)) %>% 
+# Aplicamos la fórmula, una vez que tenemos todos los 
+# ingredientes. 
+  mutate(r_2 = (suma_e_1 - suma_e_2)/suma_e_1)
+```
+
