@@ -57,13 +57,13 @@ Repaso general de conceptos de regresión: vimos teoría de la regresión, de do
 
 ### Sesión 12. Regresión lineal, parte 2.
 
-Sesión de repaso de la tarea 7. Se revisaron los métodos para calcular los coeficientes y también el cálculo de la $R^2$
+Sesión de repaso de la tarea 7. Se revisaron los métodos para calcular los coeficientes de regresión y también el cálculo de la $R^2$, así como un repaso de inferencia estadística a partir de dichos coeficientes. 
 
 
 #### Agradecimientos. 
 
-Agradecimiento al Dr. Salvador Vázquez del Mercado por la oportunidad de ayudar con la impartición de este curso, así 
-como a los estudiantes de la Maestría en Periodismo 2019-2021 por ser tan lindas personas. 
+Agradecimiento al Dr. Sebastián Garrido por la oportunidad de ayudar con la impartición de este laboratorio, así 
+como a los estudiantes del CIDE por su asistencia a estas sesiones remediales del curso. 
 
 #### Contacto. 
 
