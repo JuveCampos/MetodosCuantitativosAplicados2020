@@ -2,7 +2,7 @@
 
 Repositorio de documentos del laboratorio de la Clase de Métodos Cuantitativos Aplicados para los alumnos de CPyRRII del CIDE, año 2020.
 
-**Periodo:** El laboratorio se impartirá de Febrero a Junio del 2020, por lo que este repositorio estará en construcción durante este periodo de tiempo.  
+**Periodo:** El laboratorio se impartió de Febrero a Junio del 2020, de forma presencial en un inicio y de forma remota durante la segunda mitad del semestre, debido a la contingencia por la Pandemia del COVID-19.
 
 ## Contenido.
 
@@ -58,3 +58,15 @@ Repaso general de conceptos de regresión: vimos teoría de la regresión, de do
 ### Sesión 12. Regresión lineal, parte 2.
 
 Sesión de repaso de la tarea 7. Se revisaron los métodos para calcular los coeficientes y también el cálculo de la $R^2$
+
+
+#### Agradecimientos. 
+
+Agradecimiento al Dr. Salvador Vázquez del Mercado por la oportunidad de ayudar con la impartición de este curso, así 
+como a los estudiantes de la Maestría en Periodismo 2019-2021 por ser tan lindas personas. 
+
+#### Contacto. 
+
+Cualquier observación respecto a este repositorio, favor de mandar mensaje a juvenal.campos@cide.edu o por cualquier otro medio de contacto disponible a través de mi página www.juvenalcampos.com . 
+
+**Juvenal Campos, 2020**
